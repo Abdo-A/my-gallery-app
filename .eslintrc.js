@@ -23,5 +23,14 @@ module.exports = {
     'react',
   ],
   rules: {
+    'no-underscore-dangle': [
+      'off',
+      {
+        allow: ['_id'],
+        allowAfterThis: false,
+        allowAfterSuper: false,
+        enforceInMethodNames: true,
+      },
+    ],
   },
 };

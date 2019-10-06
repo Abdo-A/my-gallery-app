@@ -1,19 +1,34 @@
-import React from 'react';
+import React, { useState, useEffect } from 'react';
 import { Card, Input, Button } from 'antd';
 import { connect } from 'react-redux';
+import PropTypes from 'prop-types';
 import CommentsList from './CommentsList';
+import * as photoActions from '../../../redux/actions/photoActions';
 
-const { Meta } = Card;
+const Post = ({ post }) => {
+  const [photo, setPhoto] = useState('');
 
-const Post = ({ isAppLoading }) => {
-  console.log(isAppLoading);
+  const getPhotoContent = async (postId) => {
+    const photoContent = await photoActions.getPhotoContent(postId);
+    setPhoto(photoContent);
+  };
+
+  useEffect(() => {
+    const getContent = async () => {
+      await getPhotoContent(post._id);
+    };
+    getContent();
+  }, []);
+
+
+  console.log(post);
 
   return (
     <Card
-      style={{ width: '30vw', marginBottom: 50 }}
-      cover={<img alt="example" src="https://os.alipayobjects.com/rmsportal/QBnOOoLaAfKPirc.png" />}
+      style={{ width: '30vw', marginBottom: 50, borderRadius: 20 }}
     >
-      <Meta title="Europe Street beat" />
+      <img src={`data:image/jpeg;base64,${photo}`} style={{ width: '100%' }} alt="post" />
+
       <span style={{ display: 'flex', justifyContent: 'space-between', margin: 10 }}>
         <span>
           <span role="img" aria-label="thumbs up">👍</span>
@@ -26,12 +41,19 @@ const Post = ({ isAppLoading }) => {
     </Card>
   );
 };
+Post.propTypes = {
+  post: PropTypes.shape({ _id: '' }),
+};
 
-const mapStateToProps = (state) => ({
-  isAppLoading: state.general.isAppLoading,
+Post.defaultProps = {
+  post: {},
+};
+
+const mapStateToProps = () => ({
 });
 
 const mapDispatchToProps = {
+  getPhotoContent: photoActions.getPhotoContent,
 };
 
 
