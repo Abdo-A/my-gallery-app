@@ -7,7 +7,6 @@ import filter from 'lodash/filter';
 import merge from 'lodash/merge';
 import concat from 'lodash/concat';
 import fs from 'fs';
-import path from 'path';
 import randomstring from 'randomstring';
 import {
   add,
@@ -37,7 +36,8 @@ export const create = async (req, res) => {
   await new Promise((result) => {
     fs.rename(
       req.file.path,
-      `/Users/Shared/projects/Quinncia/quinncia-frontend-assignment/src/server/storage/photo-${newPhoto._id}.png`,
+      // `/Users/Shared/projects/Quinncia/quinncia-frontend-assignment/src/server/storage/photo-${newPhoto._id}.png`,
+      `${__dirname}/photo-${newPhoto._id}.png`,
       result,
     );
   });
@@ -122,10 +122,9 @@ export const remove = async (req, res) => {
 
   // Delete photo from Storage
   try {
-    fs.unlinkSync(path.join(
-      '/Users/Shared/projects/Quinncia/quinncia-frontend-assignment/src/server/storage/photo',
-      `../../storage/photo-${_id}.png`,
-    ));
+    fs.unlinkSync(
+      `photo-${_id}.png`, { root: __dirname },
+    );
   } catch {}
 
   return res
@@ -160,10 +159,9 @@ export const getOne = async (req, res) => {
 };
 
 export const getContent = async (req, res) => {
-  res.sendFile(path.join(
-    '/Users/Shared/projects/Quinncia/quinncia-frontend-assignment/src/server/storage/photo',
-    `../../storage/photo-${req.params.id}.png`,
-  ));
+  res.sendFile(
+    `photo-${req.params.id}.png`, { root: __dirname },
+  );
 };
 
 export const getMany = async (req, res) => {
