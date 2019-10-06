@@ -39,7 +39,10 @@ export const getAllPosts = (callback) => (dispatch) => {
       if (callback) callback();
       dispatch({
         type: actionTypes.GET_ALL_POSTS,
-        payload: res.data.photos,
+        payload:
+        [...res.data.photos.sort(
+          (photo1, photo2) => new Date(photo2.created_at) - new Date(photo1.created_at),
+        )],
       });
     })
     .catch((err) => {

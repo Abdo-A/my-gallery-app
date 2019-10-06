@@ -36,7 +36,6 @@ export const create = async (req, res) => {
   await new Promise((result) => {
     fs.rename(
       req.file.path,
-      // `/Users/Shared/projects/Quinncia/quinncia-frontend-assignment/src/server/storage/photo-${newPhoto._id}.png`,
       `${__dirname}/photo-${newPhoto._id}.png`,
       result,
     );
