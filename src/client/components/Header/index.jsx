@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
 import { Button } from 'antd';
 import PostModal from '../PostModal';
+import AddTag from '../AddTag';
 
 const Header = () => {
   const [postModalVisible, setPostModalVisible] = useState(false);
@@ -16,6 +17,7 @@ const Header = () => {
   return (
     <div>
       <Button icon="picture" onClick={openPostModal}>Post a photo</Button>
+      <AddTag />
       <PostModal visible={postModalVisible} closeModal={closePostModal} />
     </div>
   );

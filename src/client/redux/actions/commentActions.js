@@ -3,7 +3,6 @@ import * as generalActions from './generalActions';
 import http, { commentApi } from '../../helpers/httpService';
 
 export const createComment = (commentData, callback) => (dispatch) => {
-  console.log(commentData);
   http
     .post(`${commentApi}`, commentData)
     .then(() => {
@@ -23,5 +22,3 @@ export const getOneComment = async (commentId) => {
 
   return res.data.comment;
 };
-
-export const w = 3;

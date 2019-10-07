@@ -8,3 +8,4 @@ export const SET_QUICK_INFO = 'SET_QUICK_INFO';
 export const GET_ALL_POSTS = 'GET_ALL_POSTS';
 // Comment
 // Tag
+export const GET_ALL_TAGS = 'GET_ALL_TAGS';

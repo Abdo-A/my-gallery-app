@@ -37,7 +37,7 @@ const App = ({ isAppLoading, quickInfo, setQuickInfo }) => {
   useEffect(() => {
     console.log('INSODE', quickInfo);
     if (quickInfo) {
-      message.info(quickInfo);
+      message.info(quickInfo, 1);
       setQuickInfo('');
     }
   }, [quickInfo]);
