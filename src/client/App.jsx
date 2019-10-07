@@ -8,6 +8,7 @@ import 'antd/dist/antd.css';
 
 import Header from './components/Header';
 import PostsList from './components/PostsList';
+import * as generalActions from './redux/actions/generalActions';
 
 const Container = styled.div`
   text-align: center;
@@ -32,10 +33,12 @@ const GrayContainer = styled.div`
   align-items: center;
 `;
 
-const App = ({ isAppLoading, quickInfo }) => {
+const App = ({ isAppLoading, quickInfo, setQuickInfo }) => {
   useEffect(() => {
+    console.log('INSODE', quickInfo);
     if (quickInfo) {
       message.info(quickInfo);
+      setQuickInfo('');
     }
   }, [quickInfo]);
 
@@ -58,11 +61,13 @@ const App = ({ isAppLoading, quickInfo }) => {
 App.propTypes = {
   isAppLoading: PropTypes.bool,
   quickInfo: PropTypes.string,
+  setQuickInfo: PropTypes.func,
 };
 
 App.defaultProps = {
   isAppLoading: false,
   quickInfo: '',
+  setQuickInfo: () => {},
 };
 
 const mapStateToProps = (state) => ({
@@ -70,4 +75,9 @@ const mapStateToProps = (state) => ({
   quickInfo: state.general.quickInfo,
 });
 
-export default connect(mapStateToProps)(App);
+const mapDispatchToProps = {
+  setQuickInfo: generalActions.setQuickInfo,
+};
+
+
+export default connect(mapStateToProps, mapDispatchToProps)(App);

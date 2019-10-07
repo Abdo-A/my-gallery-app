@@ -2,9 +2,10 @@ import * as actionTypes from './actionTypes';
 import * as generalActions from './generalActions';
 import http, { commentApi } from '../../helpers/httpService';
 
-export const createComment = (postId, text, callback) => (dispatch) => {
+export const createComment = (commentData, callback) => (dispatch) => {
+  console.log(commentData);
   http
-    .post(`${commentApi}`, { name: text, photoID: postId })
+    .post(`${commentApi}`, commentData)
     .then(() => {
       dispatch(generalActions.setQuickInfo('Comment added successfully'));
       if (callback) callback();

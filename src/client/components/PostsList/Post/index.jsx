@@ -11,7 +11,6 @@ const PointerContainer = styled.span`
   cursor: pointer;
 `;
 
-
 const Post = ({ initialPostData, likePost, createComment }) => {
   const [photo, setPhoto] = useState('');
   const [postData, setPostData] = useState({});
@@ -61,14 +60,15 @@ const Post = ({ initialPostData, likePost, createComment }) => {
     likePost(postId, likes, refreshPost);
   };
 
-  const onCreateComment = () => {
-    if (!currentCommentText) return;
+  const onCreateComment = ({ text, parentID }) => {
+    if (!text) return;
     const { _id: postId } = postData;
     const callback = () => {
       refreshPost();
       setCurrentCommentText('');
     };
-    createComment(postId, currentCommentText, callback);
+
+    createComment({ photoID: postId, name: text, parentID: parentID || 0 }, callback);
   };
 
   const { likes } = postData;
@@ -89,9 +89,9 @@ const Post = ({ initialPostData, likePost, createComment }) => {
           {' '}
           likes
         </span>
-        <CommentsList comments={comments} />
+        <CommentsList comments={comments} onCreateComment={onCreateComment} />
       </span>
-      <Input placeholder="Write a comment" value={currentCommentText} onChange={(e) => setCurrentCommentText(e.target.value)} onKeyDown={(e) => e.key === 'Enter' && onCreateComment()} />
+      <Input placeholder="Type a comment" value={currentCommentText} onChange={(e) => setCurrentCommentText(e.target.value)} onKeyDown={(e) => e.key === 'Enter' && onCreateComment({ text: currentCommentText })} />
       <Button onClick={onCreateComment} type="primary" style={{ marginTop: 10 }}>Add</Button>
     </Card>
   );
