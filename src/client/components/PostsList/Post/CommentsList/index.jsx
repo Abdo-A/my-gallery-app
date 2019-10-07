@@ -1,11 +1,13 @@
 import React from 'react';
 import { Popover, Button } from 'antd';
+import PropTypes from 'prop-types';
 
-const CommentsList = () => {
+const CommentsList = ({ comments }) => {
   const content = (
     <div>
-      <p>Comment</p>
-      <p>Comment</p>
+      {comments.map((comment) => (
+        <p key={comment._id}>{comment.name}</p>
+      ))}
     </div>
   );
 
@@ -16,5 +18,14 @@ const CommentsList = () => {
     </Popover>
   );
 };
+
+CommentsList.propTypes = {
+  comments: PropTypes.arrayOf(PropTypes.shape({})),
+};
+
+CommentsList.defaultProps = {
+  comments: [],
+};
+
 
 export default CommentsList;

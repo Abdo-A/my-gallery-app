@@ -52,6 +52,8 @@ export const create = async (req, res) => {
     ),
   );
 
+  newComment.name = req.body.name;
+
   const {
     photoID,
   } = req.body;

@@ -5,23 +5,38 @@ import PropTypes from 'prop-types';
 import styled from 'styled-components';
 import CommentsList from './CommentsList';
 import * as photoActions from '../../../redux/actions/photoActions';
+import * as commentActions from '../../../redux/actions/commentActions';
 
 const PointerContainer = styled.span`
   cursor: pointer;
 `;
 
 
-const Post = ({ initialPostData, likePost }) => {
+const Post = ({ initialPostData, likePost, createComment }) => {
   const [photo, setPhoto] = useState('');
   const [postData, setPostData] = useState({});
+  const [comments, setComments] = useState([]);
+  const [currentCommentText, setCurrentCommentText] = useState('');
 
   const getPhotoContent = async (postId) => {
     const photoContent = await photoActions.getPhotoContent(postId);
     setPhoto(photoContent);
   };
+  const getPostComments = (commentIDs) => {
+    setComments([]);
+
+    const newComments = [];
+
+    commentIDs.map(async (commentID, index) => {
+      const comment = await commentActions.getOneComment(commentID);
+      newComments[index] = comment;
+      setComments(newComments);
+    });
+  };
 
   useEffect(() => {
     setPostData(initialPostData);
+    getPostComments(initialPostData.commentIDs);
     const getContent = async () => {
       await getPhotoContent(initialPostData._id);
     };
@@ -30,15 +45,19 @@ const Post = ({ initialPostData, likePost }) => {
 
   const refreshPost = async () => {
     const post = await photoActions.getOnePost(postData._id);
+
     setPostData(post);
+    getPostComments(post.commentIDs);
   };
 
   const onLikePost = () => {
-    const { _id, likes } = postData;
+    const { _id: postId, likes } = postData;
+    likePost(postId, likes, refreshPost);
+  };
 
-    const callback = refreshPost;
-
-    likePost(_id, likes, callback);
+  const onCreateComment = () => {
+    const { _id: postId } = postData;
+    createComment(postId, currentCommentText, refreshPost);
   };
 
 
@@ -61,21 +80,27 @@ const Post = ({ initialPostData, likePost }) => {
           {' '}
           likes
         </span>
-        <CommentsList />
+        <CommentsList comments={comments} />
       </span>
-      <Input placeholder="Write a comment" />
-      <Button type="primary" style={{ marginTop: 10 }}>Add</Button>
+      <Input placeholder="Write a comment" onChange={(e) => setCurrentCommentText(e.target.value)} />
+      <Button onClick={onCreateComment} type="primary" style={{ marginTop: 10 }}>Add</Button>
     </Card>
   );
 };
 Post.propTypes = {
-  initialPostData: PropTypes.shape({ _id: PropTypes.string, likes: PropTypes.number }),
+  initialPostData: PropTypes.shape({
+    _id: PropTypes.string,
+    likes: PropTypes.number,
+    commentIDs: PropTypes.arrayOf(PropTypes.string),
+  }),
   likePost: PropTypes.func,
+  createComment: PropTypes.func,
 };
 
 Post.defaultProps = {
   initialPostData: {},
   likePost: () => {},
+  createComment: () => {},
 };
 
 const mapStateToProps = () => ({
@@ -83,6 +108,7 @@ const mapStateToProps = () => ({
 
 const mapDispatchToProps = {
   likePost: photoActions.likePost,
+  createComment: commentActions.createComment,
 };
 
 
