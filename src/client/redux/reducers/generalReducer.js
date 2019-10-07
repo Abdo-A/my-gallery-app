@@ -2,6 +2,7 @@ import * as actionTypes from '../actions/actionTypes';
 
 const INITIAL_STATE = {
   isAppLoading: false,
+  quickInfo: '',
 };
 
 export default (state = INITIAL_STATE, action) => {
@@ -16,6 +17,11 @@ export default (state = INITIAL_STATE, action) => {
       return {
         ...state,
         isAppLoading: false,
+      };
+    case actionTypes.SET_QUICK_INFO:
+      return {
+        ...state,
+        quickInfo: action.payload,
       };
 
     default:

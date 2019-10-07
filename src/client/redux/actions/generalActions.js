@@ -11,3 +11,10 @@ export const endLoading = () => (dispatch) => {
     type: actionTypes.END_LOADING,
   });
 };
+
+export const setQuickInfo = (text) => (dispatch) => {
+  dispatch({
+    type: actionTypes.SET_QUICK_INFO,
+    payload: text,
+  });
+};

@@ -1,7 +1,7 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 import styled from 'styled-components';
 import { connect } from 'react-redux';
-import { Spin } from 'antd';
+import { Spin, message } from 'antd';
 import PropTypes from 'prop-types';
 
 import 'antd/dist/antd.css';
@@ -32,31 +32,42 @@ const GrayContainer = styled.div`
   align-items: center;
 `;
 
-const App = ({ isAppLoading }) => (
-  <Container>
-    {
-      isAppLoading
-      && (
-      <GrayContainer>
-        <Spin size="large" />
-      </GrayContainer>
-      )
+const App = ({ isAppLoading, quickInfo }) => {
+  useEffect(() => {
+    if (quickInfo) {
+      message.info(quickInfo);
     }
-    <Header />
-    <PostsList />
-  </Container>
-);
+  }, [quickInfo]);
+
+  return (
+    <Container>
+      {
+        isAppLoading
+        && (
+        <GrayContainer>
+          <Spin size="large" />
+        </GrayContainer>
+        )
+      }
+      <Header />
+      <PostsList />
+    </Container>
+  );
+};
 
 App.propTypes = {
   isAppLoading: PropTypes.bool,
+  quickInfo: PropTypes.string,
 };
 
 App.defaultProps = {
   isAppLoading: false,
+  quickInfo: '',
 };
 
 const mapStateToProps = (state) => ({
   isAppLoading: state.general.isAppLoading,
+  quickInfo: state.general.quickInfo,
 });
 
 export default connect(mapStateToProps)(App);

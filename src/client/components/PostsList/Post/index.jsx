@@ -24,12 +24,18 @@ const Post = ({ initialPostData, likePost, createComment }) => {
   };
   const getPostComments = (commentIDs) => {
     setComments([]);
-
-    const newComments = [];
-
-    commentIDs.map(async (commentID, index) => {
+    let newComments = [];
+    commentIDs.forEach(async (commentID) => {
       const comment = await commentActions.getOneComment(commentID);
-      newComments[index] = comment;
+      newComments.push(comment);
+
+      // To make sure all indices exist in the array
+      newComments = newComments
+        .filter(() => true);
+
+      newComments = newComments
+        .sort((a, b) => new Date(b.created_at) - new Date(a.created_at));
+
       setComments(newComments);
     });
   };
@@ -56,12 +62,15 @@ const Post = ({ initialPostData, likePost, createComment }) => {
   };
 
   const onCreateComment = () => {
+    if (!currentCommentText) return;
     const { _id: postId } = postData;
-    createComment(postId, currentCommentText, refreshPost);
+    const callback = () => {
+      refreshPost();
+      setCurrentCommentText('');
+    };
+    createComment(postId, currentCommentText, callback);
   };
 
-
-  console.log(postData);
   const { likes } = postData;
 
   return (
@@ -82,11 +91,12 @@ const Post = ({ initialPostData, likePost, createComment }) => {
         </span>
         <CommentsList comments={comments} />
       </span>
-      <Input placeholder="Write a comment" onChange={(e) => setCurrentCommentText(e.target.value)} />
+      <Input placeholder="Write a comment" value={currentCommentText} onChange={(e) => setCurrentCommentText(e.target.value)} onKeyDown={(e) => e.key === 'Enter' && onCreateComment()} />
       <Button onClick={onCreateComment} type="primary" style={{ marginTop: 10 }}>Add</Button>
     </Card>
   );
 };
+
 Post.propTypes = {
   initialPostData: PropTypes.shape({
     _id: PropTypes.string,

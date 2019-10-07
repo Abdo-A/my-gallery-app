@@ -1,5 +1,6 @@
 import * as actionTypes from './actionTypes';
 import http, { photoApi } from '../../helpers/httpService';
+import * as generalActions from './generalActions';
 
 export const createPost = (post, callback) => (dispatch) => {
   dispatch({
@@ -13,6 +14,7 @@ export const createPost = (post, callback) => (dispatch) => {
   http
     .post(`${photoApi}`, formData)
     .then(() => {
+      dispatch(generalActions.setQuickInfo('Post added successfully'));
       if (callback) callback();
     })
     .catch((err) => {
