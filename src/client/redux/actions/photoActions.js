@@ -2,14 +2,14 @@ import * as actionTypes from './actionTypes';
 import http, { photoApi } from '../../helpers/httpService';
 import * as generalActions from './generalActions';
 
-export const createPost = (post, callback) => (dispatch) => {
+export const createPost = (post, tagIDs, callback) => (dispatch) => {
   dispatch({
     type: actionTypes.START_LOADING,
   });
 
   const formData = new FormData();
-
   formData.append('profile', post, post.name);
+  formData.append('tagIDs', tagIDs);
 
   http
     .post(`${photoApi}`, formData)

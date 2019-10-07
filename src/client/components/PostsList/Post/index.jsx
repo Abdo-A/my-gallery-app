@@ -1,5 +1,7 @@
 import React, { useState, useEffect } from 'react';
-import { Card, Input, Button } from 'antd';
+import {
+  Card, Input, Button, Tag,
+} from 'antd';
 import { connect } from 'react-redux';
 import PropTypes from 'prop-types';
 import styled from 'styled-components';
@@ -11,7 +13,9 @@ const PointerContainer = styled.span`
   cursor: pointer;
 `;
 
-const Post = ({ initialPostData, likePost, createComment }) => {
+const Post = ({
+  initialPostData, allTags, likePost, createComment,
+}) => {
   const [photo, setPhoto] = useState('');
   const [postData, setPostData] = useState({});
   const [comments, setComments] = useState([]);
@@ -72,10 +76,14 @@ const Post = ({ initialPostData, likePost, createComment }) => {
   };
 
   const { likes } = postData;
+  console.log('POST DATA', postData);
+  const postTags = allTags.filter((tag) => postData.tagIDs && postData.tagIDs.split(',').includes(tag._id));
 
   return (
     <Card
-      style={{ width: '30vw', marginBottom: 50, borderRadius: 20 }}
+      style={{
+        width: '30vw', minWidth: 300, marginBottom: 50, borderRadius: 20,
+      }}
     >
       <img src={`data:image/jpeg;base64,${photo}`} style={{ width: '100%' }} alt="post" />
 
@@ -91,6 +99,11 @@ const Post = ({ initialPostData, likePost, createComment }) => {
         </span>
         <CommentsList comments={comments} onCreateComment={onCreateComment} />
       </span>
+      {
+        postTags.map((tag) => (
+          <Tag color="#87d068" style={{ margin: 10 }} key={tag._id}>{tag.name}</Tag>
+        ))
+      }
       <Input placeholder="Type a comment" value={currentCommentText} onChange={(e) => setCurrentCommentText(e.target.value)} onKeyDown={(e) => e.key === 'Enter' && onCreateComment({ text: currentCommentText })} />
       <Button onClick={onCreateComment} type="primary" style={{ marginTop: 10 }}>Add</Button>
     </Card>
@@ -103,17 +116,20 @@ Post.propTypes = {
     likes: PropTypes.number,
     commentIDs: PropTypes.arrayOf(PropTypes.string),
   }),
+  allTags: PropTypes.arrayOf(PropTypes.shape({})),
   likePost: PropTypes.func,
   createComment: PropTypes.func,
 };
 
 Post.defaultProps = {
   initialPostData: {},
+  allTags: [],
   likePost: () => {},
   createComment: () => {},
 };
 
-const mapStateToProps = () => ({
+const mapStateToProps = (state) => ({
+  allTags: state.tag.allTags,
 });
 
 const mapDispatchToProps = {

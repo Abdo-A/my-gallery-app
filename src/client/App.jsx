@@ -1,7 +1,7 @@
 import React, { useEffect } from 'react';
 import styled from 'styled-components';
 import { connect } from 'react-redux';
-import { Spin, message } from 'antd';
+import { Spin, message, notification } from 'antd';
 import PropTypes from 'prop-types';
 
 import 'antd/dist/antd.css';
@@ -37,7 +37,7 @@ const App = ({ isAppLoading, quickInfo, setQuickInfo }) => {
   useEffect(() => {
     console.log('INSODE', quickInfo);
     if (quickInfo) {
-      message.info(quickInfo, 1);
+      notification.success({ message: quickInfo, duration: 1 });
       setQuickInfo('');
     }
   }, [quickInfo]);

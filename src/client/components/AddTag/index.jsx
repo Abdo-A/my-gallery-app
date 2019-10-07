@@ -10,7 +10,7 @@ const AddTag = ({ allTags, createTag, getAllTags }) => {
   useEffect(() => {
     getAllTags();
   }, []);
-  console.log(allTags);
+
   const [chosenTag, setChosenTag] = useState('');
   const onAddTag = () => {
     if (!chosenTag) { return; }
@@ -32,7 +32,7 @@ const AddTag = ({ allTags, createTag, getAllTags }) => {
       <Button onClick={onAddTag} style={{ marginTop: 10 }}>Add Tag</Button>
       <div>
         {allTags.map((tag) => (
-          <Tag color="#108ee9" style={{ margin: 10 }}>{tag.name}</Tag>
+          <Tag color="#87d068" style={{ margin: 10 }} key={tag._id}>{tag.name}</Tag>
         ))}
       </div>
     </Card>
