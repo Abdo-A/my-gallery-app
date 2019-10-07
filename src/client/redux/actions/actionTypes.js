@@ -5,7 +5,8 @@ export const SET_ERRORS = 'SET_ERRORS';
 export const SET_QUICK_INFO = 'SET_QUICK_INFO';
 
 // Post
-export const GET_ALL_POSTS = 'GET_ALL_POSTS';
+export const SET_ALL_POSTS = 'SET_ALL_POSTS';
 // Comment
 // Tag
-export const GET_ALL_TAGS = 'GET_ALL_TAGS';
+export const SET_ALL_TAGS = 'SET_ALL_TAGS';
+export const SET_SELECTED_TAGS = 'SET_SELECTED_TAGS';

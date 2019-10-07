@@ -1,7 +1,7 @@
 import React, { useEffect } from 'react';
 import styled from 'styled-components';
 import { connect } from 'react-redux';
-import { Spin, message, notification } from 'antd';
+import { Spin, notification } from 'antd';
 import PropTypes from 'prop-types';
 
 import 'antd/dist/antd.css';
@@ -35,7 +35,6 @@ const GrayContainer = styled.div`
 
 const App = ({ isAppLoading, quickInfo, setQuickInfo }) => {
   useEffect(() => {
-    console.log('INSODE', quickInfo);
     if (quickInfo) {
       notification.success({ message: quickInfo, duration: 1 });
       setQuickInfo('');

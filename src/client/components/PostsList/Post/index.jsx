@@ -76,7 +76,6 @@ const Post = ({
   };
 
   const { likes } = postData;
-  console.log('POST DATA', postData);
   const postTags = allTags.filter((tag) => postData.tagIDs && postData.tagIDs.split(',').includes(tag._id));
 
   return (

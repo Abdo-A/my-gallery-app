@@ -1,4 +1,4 @@
-import React, { useEffect } from 'react';
+import React, { useState, useEffect } from 'react';
 import styled from 'styled-components';
 import { connect } from 'react-redux';
 import PropTypes from 'prop-types';
@@ -15,15 +15,24 @@ const Container = styled.div`
   min-height: 100vh;
 `;
 
-const PostsList = ({ getAllPosts, allPosts }) => {
+const PostsList = ({ getAllPosts, allPosts, selectedTags }) => {
+  const [shownPosts, setShownPosts] = useState([]);
   useEffect(() => {
     getAllPosts();
   }, []);
 
+  useEffect(() => {
+    if (selectedTags.length === 0) {
+      setShownPosts(allPosts);
+    } else {
+      setShownPosts(allPosts.filter((post) => post.tagIDs && post.tagIDs.split(',').some((tagID) => selectedTags.some((selectedTag) => selectedTag._id === tagID))));
+    }
+  }, [selectedTags, allPosts]);
+
   return (
     <Container>
       {
-        allPosts.length > 0 ? allPosts.map((post) => (
+        shownPosts.length > 0 ? shownPosts.map((post) => (
           <Post initialPostData={post} key={post._id} />
         ))
           : (
@@ -40,16 +49,19 @@ const PostsList = ({ getAllPosts, allPosts }) => {
 PostsList.propTypes = {
   getAllPosts: PropTypes.func,
   allPosts: PropTypes.arrayOf(PropTypes.shape({})),
+  selectedTags: PropTypes.arrayOf(PropTypes.shape({})),
 
 };
 
 PostsList.defaultProps = {
   getAllPosts: () => {},
   allPosts: [],
+  selectedTags: [],
 };
 
 const mapStateToProps = (state) => ({
   allPosts: state.photo.allPosts,
+  selectedTags: state.tag.selectedTags,
 });
 
 const mapDispatchToProps = {

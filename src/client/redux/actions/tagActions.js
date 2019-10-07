@@ -27,7 +27,7 @@ export const getAllTags = (callback) => (dispatch) => {
     .then((res) => {
       if (callback) callback();
       dispatch({
-        type: actionTypes.GET_ALL_TAGS,
+        type: actionTypes.SET_ALL_TAGS,
         payload: res.data.tags,
       });
     })
@@ -42,4 +42,11 @@ export const getAllTags = (callback) => (dispatch) => {
         type: actionTypes.END_LOADING,
       });
     });
+};
+
+export const setSelectedTags = (selectedTags) => (dispatch) => {
+  dispatch({
+    type: actionTypes.SET_SELECTED_TAGS,
+    payload: selectedTags,
+  });
 };

@@ -24,7 +24,6 @@ const PostModal = ({
 
     const callback = () => {
       getAllPosts();
-      setSelectedFile(null);
       setChosenTags([]);
     };
     const chosenTagIDs = chosenTags.map((tag) => allTags.find((t) => t.name === tag)._id);
