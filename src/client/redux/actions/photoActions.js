@@ -64,3 +64,24 @@ export const getPhotoContent = async (photoId) => {
   // Transform photo to base64
   return Buffer.from(photo.data, 'binary').toString('base64');
 };
+
+export const getOnePost = async (postId) => {
+  const res = await http.get(`${photoApi}/${postId}`);
+
+  return res.data.photo;
+};
+
+
+export const likePost = (postId, currentNumberOfLikes, callback) => (dispatch) => {
+  http
+    .put(`${photoApi}/${postId}`, { likes: currentNumberOfLikes + 1 })
+    .then(() => {
+      if (callback) callback();
+    })
+    .catch((err) => {
+      dispatch({
+        type: actionTypes.SET_ERRORS,
+        payload: err.response.data,
+      });
+    });
+};

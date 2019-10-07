@@ -23,9 +23,15 @@ const PostsList = ({ getAllPosts, allPosts }) => {
   return (
     <Container>
       {
-        allPosts.map((post) => (
-          <Post post={post} key={post._id} />
+        allPosts.length > 0 ? allPosts.map((post) => (
+          <Post initialPostData={post} key={post._id} />
         ))
+          : (
+            <h2>
+              No Posts Found
+              <span role="img" aria-label="broken-heart">💔</span>
+            </h2>
+          )
       }
     </Container>
   );
