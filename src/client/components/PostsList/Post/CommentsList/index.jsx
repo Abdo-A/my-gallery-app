@@ -1,7 +1,14 @@
 import React from 'react';
 import { Popover, Button } from 'antd';
 import PropTypes from 'prop-types';
+import styled from 'styled-components';
 import Comment from './Comment';
+
+const ContentContainer = styled.div`
+  max-height:40vh;
+  max-width: 40vw;
+  overflow:auto;
+`;
 
 const CommentsList = ({ comments, onCreateComment }) => {
   const onCreateReply = (parentID, text) => {
@@ -9,7 +16,7 @@ const CommentsList = ({ comments, onCreateComment }) => {
   };
 
   const content = (
-    <div style={{ maxHeight: '40vh', maxWidth: '40vh', overflow: 'auto' }}>
+    <ContentContainer>
       {comments.length > 0 ? comments.filter((comment) => comment.parentID === 0).map((comment) => (
         <Comment
           key={comment._id}
@@ -18,7 +25,7 @@ const CommentsList = ({ comments, onCreateComment }) => {
           replies={comments.filter((reply) => reply.parentID === comment._id)}
         />
       )) : <p>No comments yet</p>}
-    </div>
+    </ContentContainer>
   );
 
   return (

@@ -46,7 +46,7 @@ const AddTag = ({
           return (
             <Tag color={isTagSelected ? '#f50' : '#108ee9'} style={{ margin: 10 }} key={tag._id} onClick={() => onClickTag(tag)}>
               {tag.name}
-              {isTagSelected ? '✔' : '⬜' }
+              {isTagSelected ? ' ✔' : ' ⬜' }
             </Tag>
           );
         })}

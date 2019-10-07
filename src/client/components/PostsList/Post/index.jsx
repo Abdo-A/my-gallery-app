@@ -13,6 +13,12 @@ const PointerContainer = styled.span`
   cursor: pointer;
 `;
 
+const PostInteractions = styled.span`
+  display: flex;
+  justify-content: space-between;
+  margin: 10;
+`;
+
 const Post = ({
   initialPostData, allTags, likePost, createComment,
 }) => {
@@ -86,7 +92,7 @@ const Post = ({
     >
       <img src={`data:image/jpeg;base64,${photo}`} style={{ width: '100%' }} alt="post" />
 
-      <span style={{ display: 'flex', justifyContent: 'space-between', margin: 10 }}>
+      <PostInteractions>
         <span>
           <PointerContainer onClick={onLikePost}>
             <span role="img" aria-label="thumbs up">👍</span>
@@ -97,7 +103,7 @@ const Post = ({
           likes
         </span>
         <CommentsList comments={comments} onCreateComment={onCreateComment} />
-      </span>
+      </PostInteractions>
       {
         postTags.map((tag) => (
           <Tag color="#87d068" style={{ margin: 10 }} key={tag._id}>{tag.name}</Tag>
